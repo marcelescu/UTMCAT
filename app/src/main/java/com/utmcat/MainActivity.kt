@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         setupUI()
         setupObservers()
         this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
+
+        val infoButton: Button = findViewById(R.id.info)
+        infoButton.setOnClickListener(infoClick)
     }
 
     private fun setupViewModel() {
@@ -44,21 +48,22 @@ class MainActivity : AppCompatActivity() {
     private fun setupUI() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = StudentAdapter(arrayListOf()).apply {
-                    itemClick = { student ->
-                        var noteArray = arrayOf<String>()
-                        for(nota in student.note)
-                            noteArray = noteArray.plusElement(nota.materie + " " + nota.nota)
-                        val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
-                        with(alertDialogBuilder)
-                        {
-                            setTitle("Note student: " + student.nume)
-                            setItems(noteArray) { dialog, which ->
-                                Toast.makeText(applicationContext, noteArray[which], Toast.LENGTH_SHORT).show()
-                            }
+            itemClick = { student ->
 
-                            setNegativeButton("CANCEL", null)
-                            show()
-                        }
+                var noteArray = arrayOf<String>()
+                for(nota in student.note)
+                    noteArray = noteArray.plusElement(nota.nota.padStart(2, ' ') + " la " + nota.materie)
+                val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
+                with(alertDialogBuilder)
+                {
+                    setTitle("Note student: " + student.nume)
+                    setItems(noteArray) { dialog, which ->
+                        Toast.makeText(applicationContext, noteArray[which], Toast.LENGTH_SHORT).show()
+                    }
+
+                    setNegativeButton("INCHIDE", null)
+                    show()
+                }
             }
         }
         recyclerView.addItemDecoration(
@@ -99,4 +104,16 @@ class MainActivity : AppCompatActivity() {
             notifyDataSetChanged()
         }
     }
+
+    private val infoClick = View.OnClickListener { view ->
+        val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
+        with(alertDialogBuilder)
+        {
+            setTitle("Despre UTMCAT")
+            setMessage("UTMCAT 1.0")
+            setNegativeButton("OK", null)
+            show()
+        }
+    }
+
 }
