@@ -3,6 +3,7 @@ package com.utmcat
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -25,10 +26,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE)
         setContentView(R.layout.activity_main)
         setupViewModel()
         setupUI()
         setupObservers()
+        this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
     }
 
     private fun setupViewModel() {

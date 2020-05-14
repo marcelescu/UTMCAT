@@ -44,7 +44,7 @@ class StudentAdapter(private val studenti: ArrayList<Student>) : RecyclerView.Ad
     fun addStudenti(studenti: List<Student>) {
         this.studenti.apply {
             clear()
-            addAll(studenti)
+            addAll(studenti.sortedBy { student -> student.nume })
         }
 
     }
